@@ -1,0 +1,14 @@
+<script src="https://unpkg.com/vue/dist/vue.js">
+</script>
+<div v-bind:class="classObject"></div>
+
+<script>
+    var app = new Vue({
+        data: {
+            classObject: {
+                active: true,
+                'text-danger': false
+            }
+        }
+    });
+</script>

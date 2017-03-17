@@ -3,7 +3,6 @@
 
 <head>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
-
     <meta charset="utf-8">
     <title></title>
 </head>
@@ -44,6 +43,8 @@
             <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
         </ol>
     </div>
+    <a :href="url" />
+    <a @click="doSomething" />
 </body>
 
 </html>
@@ -63,18 +64,22 @@
     });
     var app3 = new Vue({
         el: "#app3",
-        data: { seen: true, hide: false }
-
+        data: {
+            seen: true,
+            hide: false
+        }
     });
 
     var app4 = new Vue({
         el: "#app4",
         data: {
-            todos: [
-                { text: '学习 Javascript ' },
-                { text: '学习 Vue ' },
-                { text: '学习前端的框架 ' },
-            ]
+            todos: [{
+                text: '学习 Javascript '
+            }, {
+                text: '学习 Vue '
+            }, {
+                text: '学习前端的框架 '
+            }, ]
         }
     });
 
@@ -84,7 +89,7 @@
             message: 'Hello Vue.js'
         },
         methods: {
-            reverseMessage: function () {
+            reverseMessage: function() {
                 this.message = this.message.split('').reverse().join('');
             }
         }
@@ -99,15 +104,16 @@
         props: ['todo'],
         template: '<li>{{todo.text}}</li>'
     });
-    var app7=new Vue({
-        el:"#app7",
-        data:{
-            groceryList:[
-                {text:'蔬菜'},
-                {text:'水果'},
-                {text:'汉堡牛排'}
-            ]
+    var app7 = new Vue({
+        el: "#app7",
+        data: {
+            groceryList: [{
+                text: '蔬菜'
+            }, {
+                text: '水果'
+            }, {
+                text: '汉堡牛排'
+            }]
         }
     })
-
 </script>

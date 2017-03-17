@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        {{message}}
+    </div>
+    <p id="example">
+
+    </p>
+</body>
+
+</html>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            message: 'Hello Vue!'
+        }
+    });
+
+    var data = {
+        firstName: 'mei',
+        lastName: 'yaohui'
+    };
+    var vm = new Vue({
+        el: "#example",
+        data: data,
+        created: function() {
+            console.log('a is ' + this.a);
+        },
+        computed: {
+            fullName: {
+                get: function() {
+                    return this.firstName + this.lastName;
+                },
+                set: function(newVal) {
+                    var names = newVal.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length - 1];
+                }
+            }
+        }
+    });
+    vm.fullName = 'John Doe'
+    console.log(vm.fullName);
+    // vm.$watch('a', function(newVal, oldVal) {
+    //     console.log('值从 ' + oldVal + ' 变为 ' + newVal);
+    // });
+    // vm.a = 4;
+</script>

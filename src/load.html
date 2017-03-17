@@ -1,0 +1,74 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf8">
+</head>
+
+<body>
+    <ul id="content"></ul>
+</body>
+
+</html>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js">
+</script>
+<script>
+    $(function() {
+        $.get('/data.json', function(data) {
+            $('#content').html('');
+            //data里大概有13万条数据
+            loadAll(data);
+        });
+
+        function loadAll(response) {
+            //将13万条数据分组， 每组500条，一共260组
+            var groups = group(response);
+            console.log(groups.length);
+            for (var i = 0; i < groups.length; i++) {
+                //闭包， 保持i值的正确性
+                window.setTimeout(function() {
+                    var group = groups[i];
+                    var index = i + 1;
+                    return function() {
+                        //分批渲染
+                        loadPart(group, index);
+                    }
+                }(), 1);
+            }
+        }
+
+        //数据分组函数（每组500条）
+        function group(data) {
+            var result = [];
+            var groupItem;
+            for (var i = 0; i <= data.length; i++) {
+                if (i % 500 == 0) {
+                    if (groupItem) {
+                        result.push(groupItem);
+                    }
+                    console.log(Array.prototype.toLocaleString(groupItem));
+                    groupItem = [];
+                }
+                if (i != data.length) //确保不超过索引
+                    groupItem.push(data[i]);
+            }
+            return result;
+        }
+
+        var currIndex = 0;
+
+        //加载某一批数据的函数
+        function loadPart(group, index) {
+            var html = "";
+            var a = group.length;
+            for (var i = 0; i < group.length; i++) {
+                var item = group[i];
+                html += "<li>title:" + item.title + " content:" + item.content + " a:" + a + "</li>";
+            }
+            //保证顺序不错乱
+            while (index - currIndex == 1) {
+                $('#content').append(html);
+                currIndex = index;
+            }
+        }
+    });
+</script>
