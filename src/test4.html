@@ -4,6 +4,36 @@
 <head>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <meta charset="utf-8">
+    <script>
+        Vue.component('todo-item', {
+            template: '\
+        <li>\
+           {{title}}\
+           <button v-on:click="$emit(\'remove\')">X</button>\
+        </li>',
+            props: ['title']
+        });
+        Vue.component('child', {
+            // camelCase in JavaScript
+            props: ['myMessage'],
+            template: '<span>{{ myMessage }}</span>'
+        })
+
+        Vue.component('button-counter', {
+            template: '<button v-on:click="increatment">{{ counter }}</button>',
+            data: function() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                increatment: function() {
+                    this.counter += 1;
+                    //触发传过来的函数方法
+                    this.$emit('increatment');
+                }
+            }
+        })
     </script>
 </head>
 
@@ -21,14 +51,131 @@
         </div>
     </div>
 
-
     <div id="repeat2">
         <span v-for="n in 10">{{ n }}</span>
+    </div>
+
+    <div id="todo-list-example">
+        <input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="Add to todo" />
+        <ul>
+            <todo-item v-for="(todo,index) in todos" v-bind:title='todo' v-on:remove="todos.splice(index,1)">
+            </todo-item>
+        </ul>
+    </div>
+    <div id="todo-filter-example">
+        <input v-model="newTodoText" v-on:keyup.enter="addNewNum" />
+        <ul>
+            <li v-for="n in even(nums)">{{ n }}</li>
+        </ul>
+        <ul>
+            <li v-for="n in nums">{{ n }}</li>
+        </ul>
+        <button v-on:click="counter+=1">点击{{counter}}</button>
+        <p>这个按钮被点击了{{counter}}次
+    </div>
+
+    <div id="chk">
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike2" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+
+
+        <!-- kebab-case in HTML -->
+        <input v-model="parentMsg">
+        <br>
+        <child v-bind:my-message="parentMsg"></child>
+        数量{{total}}
+        <button-counter @increatment="increatementTotal"></button-counter>
+        <button-counter v-on:increatment="increatementTotal"></button-counter>
+    </div>
+    <div id="demo">
+        <button v-on:click="show = !show">
+    Toggle
+  </button>
+        <transition name="fade">
+            <p v-if="show">hello</p>
+        </transition>
     </div>
 </body>
 
 </html>
 <script>
+    new Vue({
+        el: '#demo',
+        data: {
+            show: true
+        }
+    })
+    var vm = new Vue({
+        el: '#chk',
+        data: {
+            checkedNames: [],
+            parentMsg: '哈哈哈',
+            total: 0
+        },
+        methods: {
+            increatementTotal: function() {
+                this.total += 1;
+                this.parentMsg = '';
+                this.$nextTick(function() {
+                    console.log(this.$el.textContent);
+                });
+            }
+        }
+    });
+    var Child = {
+        template: '<div>A custom component</div>'
+    }
+    new Vue({
+        conponents: {
+            'mycomponent': Child
+        }
+    })
+
+
+    new Vue({
+        el: "#todo-list-example",
+        data: {
+            newTodoText: '',
+            todos: [
+                'Do the dishes',
+                'Take out the trash',
+                'Mow the lawn'
+            ]
+        },
+        methods: {
+            addNewTodo: function() {
+                this.todos.push(this.newTodoText);
+                this.newTodoText = '';
+            }
+        }
+    });
+
+    new Vue({
+        el: "#todo-filter-example",
+        data: {
+            counter: 0,
+            newTodoText: '',
+            nums: [1, 2, 3, 4, 5, 6]
+        },
+        methods: {
+            even: function(num) {
+                return num.filter(function(number) {
+                    return number % 2 === 0;
+                })
+            },
+            addNewNum: function() {
+                this.nums.push(this.newTodoText);
+                this.newTodoText = '';
+            }
+        }
+    });
+
     var app = new Vue({
         el: '#example1',
         data: {
