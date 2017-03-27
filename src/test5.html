@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+    <meta charset="utf-8">
+    <title></title>
+</head>
+
+<body>
+</body>
+<script>
+    for (let i = 0; i < 5; i++) {
+        let i = 'ddabc';
+        console.log(i);
+    }
+    var tmp = 123;
+
+
+
+    let [x, y, z] = new Set(['a', ['b', 'd'], 'c']);
+
+    console.log(y);
+
+    function* fibs() {
+        let a = 0;
+        let b = 1;
+        while (true) {
+            yield a;
+            [a, b] = [b, a + b];
+        }
+    }
+    let [first, second, third, fourth, fifth, sixth] = fibs();
+
+    console.log(sixth);
+
+    let {
+        bar: a,
+        foo: b
+    } = {
+        foo: "aaa",
+        bar: "bbb"
+    };
+    console.log(a); // "aaa"
+    console.log(b); // "bbb"
+
+    function move({
+        x = 0,
+        y = 0
+    } = {}) {
+        return [x, y];
+    }
+
+    console.log(move({
+        x: 3,
+        y: 8
+    }));
+
+    var map = new Map();
+    map.set('first', 'hello');
+    map.set('second', 'world');
+
+    for (let [key, value] of map) {
+        console.log(key + ' is ' + value);
+    }
+    // 获取键值
+    for (let [, value] of map) {
+        console.log(value.repeat(3));
+    }
+
+    const tmpl = addrs => `
+  <table>
+  ${addrs.map(addr => `
+    <tr><td>${addr.first}</td></tr>
+    <tr><td>${addr.last}</td></tr>
+  `).join('')}
+  </table>
+`;
+
+const data = [
+    { first: '<Jane>', last: 'Bond' },
+    { first: 'Lars', last: '<Croft>' },
+];
+
+console.log(tmpl(data));
+
+// 写法一
+let str = 'return ' + '`Hello ${name}!`';
+let func = new Function('name', str);
+func('Jack') // "Hello Jack!"
+Number.parseInt('22');
+
+console.log(0.1 + 0.2 - 0.3);
+</script>
+
+</html>

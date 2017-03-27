@@ -201,7 +201,52 @@
         }
     });
 
+    var data = {
+        object: {
+            FirstName: 'John',
+            LastName: 'Doe',
+            Age: 30
+        }
+    };
+    for (let item in data.object) {
+        console.log(item);
+    }
+
     var app3 = new Vue({
         el: "#repeat2"
-    })
+    });
+
+    // arguments对象
+    function foo() {
+        var args = [...arguments];
+        console.log(args);
+    }
+    //foo(1, 2, 3);
+
+    var arr = [1, 2, 3];
+    var a = Array.from(arr, x => x * x);
+    console.log(a);
+
+    console.log(Array.from({
+        length: 2
+    }, () => 'mei'));
+
+    console.log([1, 2, 3, 4, 5].copyWithin(0, 3, 4));
+
+    console.log([1, 4, -5, 10].find((n) => n < 0));
+
+
+    for (let index of['a', 'b'].keys()) {
+        console.log(index);
+    }
+    let s = Symbol();
+
+    var proxy = new Proxy({}, {
+        get: function(target, property) {
+            return 35;
+        }
+    });
+
+    let obj = Object.create(proxy);
+    console.log(obj.time);
 </script>
